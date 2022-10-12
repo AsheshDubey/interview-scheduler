@@ -6,6 +6,7 @@ from .models import Candidate, Slot, Schedule, Participant, Interview
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializer import InterviewSerializer, ParticipantSerializer
+from django.contrib import messages
 
 def process_query(query):
     ls = query.split("&")
@@ -45,6 +46,7 @@ def schedule(request):
             if(len(match_slot)>0):
                 if(len(match_slot.filter(candidate__id=participants[0]))>0):
                     print("this is no no step b")
+                    messages.error(request, "Error: This Interview Entry Already Exists!")
                 else:
                     match_user = Schedule.objects.filter(candidate__id=participants[0])
                     print(match_user)
@@ -62,8 +64,10 @@ def schedule(request):
                                 current_paritcipant = Candidate.objects.get(id=participants[0])
                                 schedule_current = Schedule.objects.create(slot=slot_new, candidate=current_paritcipant)
                                 schedule_current.save()
+                                messages.success(request, "Success: Interview Scheduled Successfully!")
                             else:
                                 print("this is a no no step d")
+                                messages.error(request, "Error: This Participant is not available during the scheduled time!")
                         else:
                             try:
                                 slot_new = Slot.objects.get(interview_date=interview_date, start_time=start_time, end_time=end_time)
@@ -74,8 +78,10 @@ def schedule(request):
                             current_paritcipant = Candidate.objects.get(id=participants[0])
                             schedule_current = Schedule.objects.create(slot=slot_new, candidate=current_paritcipant)
                             schedule_current.save()
+                            messages.success(request, "Success: Interview Scheduled Successfully!")
                     else:
                         print("this is a no no step c")
+                        messages.success(request, "Success: Interview Scheduled Successfully!")
                         try:
                             slot_new = Slot.objects.get(interview_date=interview_date, start_time=start_time, end_time=end_time)
                         except:
@@ -88,11 +94,11 @@ def schedule(request):
                             schedule_current.save()
             else:
                 print("this is a no no step a")
+                messages.error(request, "Error: Please select atleast two Participants for this slot")
         else:
             total_participants = len(participants)
             print(total_participants)
             feasible_schedules=[]
-            feasible_slots=[]
             for participant_id in participants:
                 match_user = Schedule.objects.filter(candidate__id=participant_id)
                 print(match_user)
@@ -111,6 +117,7 @@ def schedule(request):
                             feasible_schedules.append({'slot_id':slot_new.id, 'candidate_id': current_paritcipant.id})
                         else:
                             print("this is a no no step d")
+                            messages.error(request, "Error: This Participant is not available during the scheduled time!")
                     else:
                         try:
                             slot_new = Slot.objects.get(interview_date=interview_date, start_time=start_time, end_time=end_time)
@@ -142,6 +149,7 @@ def schedule(request):
                     schedule_current = Schedule.objects.create(slot=slot_current, candidate=candidate_current)
                     print("test")
                     schedule_current.save()
+                    messages.success(request, "Success: Interview Scheduled Successfully!")
             
 
 
