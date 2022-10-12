@@ -10,9 +10,8 @@
 
     <title>Schedule</title>
         
-    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
-        
-    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    {% comment %} <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />    
+    <link type="text/css" rel="stylesheet" href="css/style.css" /> {% endcomment %}
         
 
   </head>
@@ -29,30 +28,36 @@
         
         <div class="form-group">
             <span class="form-label">Interview Date</span>
-            <input class="form-control" type="date" required>
+            <input class="form-control" type="date" name="date" required>
         </div>
     
         <div class="row no-margin">
         <div class="col-sm-6">
         <div class="form-group">
         <span class="form-label">Start-Time</span>
-        <input class="form-control" type="time" required>
+        <input class="form-control" type="time" name="start-time" required>
         </div>
         </div>
 
         <div class="col-sm-6">
         <div class="form-group">
         <span class="form-label">End-Time</span>
-        <input class="form-control" type="time" required>
+        <input class="form-control" type="time" name="end-time" required>
         </div>
         </div>
         </div>
 
-        <div class="form-group">
+        {% comment %} <div class="form-group">
             <span class="form-label">Upload Resume</span>
             <input class="form-control" type="file" name="upload" accept="application/pdf">
-        </div>
-
+        </div> {% endcomment %}
+        <select data-placeholder="Begin typing a name to filter..." multiple class="chosen-select" name="test" required>
+          {% comment %} <option value=""></option> {% endcomment %}
+          {% for each in candidate %}
+          <option value = {{each.id}}>{{each.name}} - {{each.email}}</option>
+          {% endfor %}
+          
+        </select>
         <div class="row no-margin">
             <div class="col-sm-6">
                 <div class="form-btn">
@@ -69,6 +74,28 @@
 
         
     </form>
+
+
+    <table border=3px>
+      <tr>
+        <th>Participant name</th>
+        <th> Email</th>
+        <th> Date</th>
+        <th> Start time</th>
+        <th> End time</th>
+      </tr>
+
+        {% for entry in schedule %}
+        <tr>
+          <th>{{entry.candidate.name}}</th>
+          <th>{{entry.candidate.email}}</th>
+          <th>{{entry.slot.interview_date}}</th>
+          <th>{{entry.slot.start_time}}</th>
+          <th>{{entry.slot.end_time}}</th>
+        </tr>
+        {% endfor %}
+
+    </table>
     </div>
     </div>
     </div>
