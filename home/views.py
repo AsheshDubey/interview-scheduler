@@ -4,7 +4,7 @@ import json
 from time import strftime
 from tracemalloc import start
 from django.shortcuts import render
-from .models import Candidate, Slot, Schedule, Participant, Interview
+from .models import Candidate, Slot, Schedule
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib import messages
