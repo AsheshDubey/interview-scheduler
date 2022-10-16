@@ -9,6 +9,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib import messages
 from datetime import datetime as dt
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 def process_query(query):
     ls = query.split("&")
@@ -43,7 +46,7 @@ def schedule(request):
         date_selected = dt.strptime(interview_date,'%Y-%m-%d').date()
         time_selected = dt.strptime(start_time, '%H:%M').time().strftime('%H:%M')
 
-        if(end_time>start_time and date_selected>=current_date and time_selected>=current_time):
+        if(end_time>start_time and date_selected>=current_date or time_selected>=current_time):
             
             print("good")
             print(participants, start_time, end_time, interview_date)
@@ -73,6 +76,16 @@ def schedule(request):
                                     current_paritcipant = Candidate.objects.get(id=participants[0])
                                     schedule_current = Schedule.objects.create(slot=slot_new, candidate=current_paritcipant)
                                     schedule_current.save()
+                                    subject='Your Interview has been Scheduled'
+                                    message = 'Dear '+str(current_paritcipant.name)+'\n\nYour Interview has been Scheduled for '+slot_new.interview_date.strftime("%d %b, %Y")+' from '+slot_new.start_time.strftime("%H:%M")+' to '+slot_new.end_time.strftime("%H:%M")+'.\nAll The Best'
+                                    send_mail(
+                                        subject,
+                                        message,
+                                        settings.EMAIL_HOST_USER,
+                                        [current_paritcipant.email],
+                                        fail_silently=False
+                                    )
+                                    print(current_paritcipant.email,"1")
                                     messages.success(request, "Success: Interview Scheduled Successfully!")
                                 else:
                                     print("this is a no no step d")
@@ -87,6 +100,16 @@ def schedule(request):
                                 current_paritcipant = Candidate.objects.get(id=participants[0])
                                 schedule_current = Schedule.objects.create(slot=slot_new, candidate=current_paritcipant)
                                 schedule_current.save()
+                                subject='Your Interview has been Scheduled'
+                                message = 'Dear '+str(current_paritcipant.name)+'\n\nYour Interview has been Scheduled for '+slot_new.interview_date.strftime("%d %b, %Y")+' from '+slot_new.start_time.strftime("%H:%M")+' to '+slot_new.end_time.strftime("%H:%M")+'.\nAll The Best'
+                                send_mail(
+                                    subject,
+                                    message,
+                                    settings.EMAIL_HOST_USER,
+                                    [current_paritcipant.email],
+                                    fail_silently=False
+                                )
+                                print(current_paritcipant.email,"2")
                                 messages.success(request, "Success: Interview Scheduled Successfully!")
                         else:
                             print("this is a no no step c")
@@ -101,6 +124,16 @@ def schedule(request):
                                 current_paritcipant = Candidate.objects.get(id=participant_id)
                                 schedule_current = Schedule.objects.create(slot=slot_new, candidate=current_paritcipant)
                                 schedule_current.save()
+                                subject='Your Interview has been Scheduled'
+                                message = 'Dear '+str(current_paritcipant.name)+'\n\nYour Interview has been Scheduled for '+slot_new.interview_date.strftime("%d %b, %Y")+' from '+slot_new.start_time.strftime("%H:%M")+' to '+slot_new.end_time.strftime("%H:%M")+'.\nAll The Best'
+                                send_mail(
+                                    subject,
+                                    message,
+                                    settings.EMAIL_HOST_USER,
+                                    [current_paritcipant.email],
+                                    fail_silently=False
+                                )
+                                print(current_paritcipant.email,"3")
                 else:
                     print("this is a no no step a")
                     messages.error(request, "Error: Please select atleast two Participants for this slot")
@@ -161,6 +194,16 @@ def schedule(request):
                         schedule_current = Schedule.objects.create(slot=slot_current, candidate=candidate_current)
                         print("test")
                         schedule_current.save()
+                        subject='Your Interview has been Scheduled'
+                        message = 'Dear '+str(candidate_current.name)+'\n\nYour Interview has been Scheduled for '+slot_current.interview_date.strftime("%d %b, %Y")+' from '+slot_current.start_time.strftime("%H:%M")+' to '+slot_current.end_time.strftime("%H:%M")+'.\nAll The Best'
+                        send_mail(
+                            subject,
+                            message,
+                            settings.EMAIL_HOST_USER,
+                            [candidate_current.email],
+                            fail_silently=False
+                        )
+                        print(candidate_current.email,"4")
         else:
             messages.error(request, "Error: Please Pick a Valid Slot!")
                     
