@@ -15,3 +15,6 @@ To create user entries:
 3. Go to your webpage and add "/admin" at the end of your url (eg: http://127.0.0.1:8000/admin).
 4. login using your set superuser credentials.
 5. Go to the "Candidates" table and enter your user data.
+
+
+Note: Participants will be notified on their mail about the interview schedule.
