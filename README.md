@@ -16,5 +16,7 @@ To create user entries:
 4. login using your set superuser credentials.
 5. Go to the "Candidates" table and enter your user data.
 
+Once Interviews are scheduled, Admin can view them all in the "Upcoming Interviews" section and individually re-schedule (update) and delete them. It is given that any new or updated meet cannot clash with an existed meet. Additionally, there can not be less than 2 participants in a given interview slot.
+
 
 Note: Participants will be notified on their mail about the interview schedule.
