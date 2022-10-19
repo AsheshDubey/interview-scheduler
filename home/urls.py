@@ -4,5 +4,4 @@ from home import views
 
 urlpatterns = [
     path('', views.schedule, name='schedule' ),
-    path('schedule', views.schedule, name='schedule'),
 ]
